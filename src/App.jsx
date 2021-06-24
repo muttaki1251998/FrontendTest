@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 import ActivityFeed from './components/ActivityFeed.js';
 import ActivityDetail from './components/ActivityDetail';
 
@@ -15,7 +14,7 @@ const App = () => {
         <BrowserRouter>
           <div>
             <Route path="/" exact component={ActivityFeed}/>
-            <Route path="/detail" exact component={ActivityDetail}/>
+            <Route path="/detail/:id" exact component={ActivityDetail}/>
           </div>
         </BrowserRouter>
       </div>

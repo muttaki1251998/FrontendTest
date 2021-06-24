@@ -1,38 +1,19 @@
 import React from 'react';
-import axios from 'axios';
 import '../css/app.css';
 import ActivityDetail from './ActivityDetail';
+import { fetch_activities } from '../actions';
+import { connect } from 'react-redux';
 import { MdCallMissed, MdCallReceived } from 'react-icons/md';
 import { BiVoicemail } from 'react-icons/bi';
-
+import { Link } from 'react-router-dom';
 
 
 class ActivityFeed extends React.Component {
 
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      activities: []
-    }
-  }
-
   componentDidMount() {
-    axios.get('https://aircall-job.herokuapp.com/activities')
-      .then(res => {
-        const feed = res.data;
-        this.setState({ activities: feed });
-        console.log(feed);
-      });
+    this.props.fetch_activities();
   }
 
-  getDetails(id) {
-    axios.get(`https://aircall-job.herokuapp.com/activities/:${id}`)
-      .then(res => {
-        <ActivityDetail detail={res.data} />
-      });
-  }
-  
 
   convertTime(time) {
     return time.substring(time.lastIndexOf('T') + 1, time.lastIndexOf(":"))
@@ -43,39 +24,49 @@ class ActivityFeed extends React.Component {
       color: 'red',
       fontSize: '15px'
     }
-    const  answeredCall = {
+    const answeredCall = {
       color: 'green',
       fontSize: '15px'
     }
     const voicemailCall = {
-      color:  'black',
+      color: 'black',
       fontSize: '15px'
     }
 
-    if(callType === "missed") {
-      return <MdCallMissed style={missedCall}/>
+    if (callType === "missed") {
+      return <MdCallMissed style={missedCall} />
     }
-    else if(callType === "answered") {
-      return <MdCallReceived style={answeredCall}/>
+    else if (callType === "answered") {
+      return <MdCallReceived style={answeredCall} />
     }
-    else if(callType === "voicemail") {
-      return <BiVoicemail style={voicemailCall}/>
+    else if (callType === "voicemail") {
+      return <BiVoicemail style={voicemailCall} />
     }
   }
 
   render() {
+
+    if(!this.props.activities) {
+      return <div>Loading</div>
+    }
     return (
       <div className="container-view">
-        {this.state.activities.map(activity =>
-            <div  className="content" key={activity.id}>
-            <div className="signs">{this.handleCallType(activity.call_type)}</div>
-            <div className="phone-number">{activity.from}</div>
-            <div className="time">{this.convertTime(activity.created_at)}</div>
-          </div>
+        {this.props.activities.map(activity =>
+          <Link to={`/detail/${activity.id}`}style={{ textDecoration: 'none' }} key={activity.id}>
+            <div className="content">
+              <div className="signs">{this.handleCallType(activity.call_type)}</div>
+              <div className="phone-number">{activity.from}</div>
+              <div className="time">{this.convertTime(activity.created_at)}</div>
+            </div>
+          </Link>
         )}
       </div>
     );
   }
 }
 
-export default ActivityFeed;
+const mapStateToProps = (state) => {
+  return { activities: Object.values(state.details) }
+}
+
+export default connect(mapStateToProps, { fetch_activities })(ActivityFeed);

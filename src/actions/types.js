@@ -1,0 +1,2 @@
+export const SHOW_DETAILS = 'SHOW_DETAILS'
+export const FETCH_ACTIVITIES = 'FETCH_ACTIVITIES';
