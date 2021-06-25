@@ -40,9 +40,20 @@
   flex: .08 1 auto;
 }
 .phone-number {
-  flex: 1 1 auto
+  flex: 1 .5 auto
 }
 .time {
   flex: 1 -1  auto
+}
+
+.arch-btn {
+  flex: .3 .5 auto;
+  padding: 1px;
+  padding-right: 10px;
+  text-align: center;
+  display: inline-block;
+  text-decoration: none;
+  font-size: 10px;
+  font-size: 15px;
 }
 

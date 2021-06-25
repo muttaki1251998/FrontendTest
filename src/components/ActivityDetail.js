@@ -72,7 +72,6 @@ class ActivityDetail extends React.Component {
       return <div>Loading</div>
     }
 
-    console.log(this.props.detail);
     return (
       <div>
         <Link to="/" className="icon">

@@ -6,7 +6,6 @@ import { MdCallMissed, MdCallReceived } from 'react-icons/md';
 import { BiVoicemail } from 'react-icons/bi';
 import { Link } from 'react-router-dom';
 
-
 class ActivityFeed extends React.Component {
 
   componentDidMount() {
@@ -43,22 +42,38 @@ class ActivityFeed extends React.Component {
     }
   }
 
+  renderStuffs() {
+    return this.props.activities.map(activity => {
+      if (activity.is_archived === false) {
+        return (
+          <div key={activity.id}>
+            <Link to={`/detail/${activity.id}`} style={{ textDecoration: 'none' }} >
+              <div className="content">
+                <div className="signs">{this.handleCallType(activity.call_type)}</div>
+                <div className="phone-number">{activity.from}</div>
+                <div className="time">{this.convertTime(activity.created_at)}</div>
+              </div>
+            </Link>
+            
+          </div>
+        );
+      }else {
+        return null;
+      }
+    })
+  }
+
+
   render() {
 
-    if(!this.props.activities) {
+    console.log(this.props.activities);
+    if (!this.props.activities) {
       return <div>Loading</div>
     }
+
     return (
       <div className="container-view">
-        {this.props.activities.map(activity =>
-          <Link to={`/detail/${activity.id}`}style={{ textDecoration: 'none' }} key={activity.id}>
-            <div className="content">
-              <div className="signs">{this.handleCallType(activity.call_type)}</div>
-              <div className="phone-number">{activity.from}</div>
-              <div className="time">{this.convertTime(activity.created_at)}</div>
-            </div>
-          </Link>
-        )}
+        {this.renderStuffs()}        
       </div>
     );
   }
