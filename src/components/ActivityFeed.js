@@ -1,6 +1,5 @@
 import React from 'react';
 import '../css/app.css';
-import ActivityDetail from './ActivityDetail';
 import { fetch_activities } from '../actions';
 import { connect } from 'react-redux';
 import { MdCallMissed, MdCallReceived } from 'react-icons/md';
